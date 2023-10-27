@@ -1,7 +1,11 @@
-#include <iostream>
+#include "Game.h"
 
 using namespace std;
 
 int main() {
-	cout << "Hello world";
+	Game game;
+
+	game.run();
+
+	return 0;
 }
