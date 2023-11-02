@@ -9,10 +9,16 @@ void Game::initWindow()
 	this->window->setVerticalSyncEnabled(false);
 }
 
+void Game::initPlayer()
+{
+	this->player = new Player();
+}
+
 //Construtor
 Game::Game()
 {
 	this->initWindow();
+	this->initPlayer();
 }
 
 //Destrutor
