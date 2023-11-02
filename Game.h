@@ -7,6 +7,10 @@ class Game
 {
 private:
 
+	sf::Clock timer;
+	float switchPlayerSpriteInterval = .25f;
+	int currentFrame = 0;
+
 	//Janela
 	sf::RenderWindow* window;
 	Player* player;

@@ -11,7 +11,7 @@ void Game::initWindow()
 
 void Game::initPlayer()
 {
-	this->player = new Player();
+	this->player = new Player(*this->window);
 }
 
 //Construtor
@@ -45,18 +45,32 @@ void Game::pollEvents()
 		if (ev.KeyPressed && ev.key.code == sf::Keyboard::Escape)
 			this->window->close();
 	}
+
 }
 
 void Game::update()
 {
 	this->pollEvents();
+	if (this->timer.getElapsedTime().asSeconds() >= this->switchPlayerSpriteInterval) {
+		this->currentFrame = (currentFrame + 1) % 4;
+		this->timer.restart();
+
+		int frameX = this->currentFrame * 48;
+
+		this->player->updateStaticTexture(frameX);
+	}
 }
 
 void Game::render()
 {
 	//Limpa o frame antigo
 	this->window->clear();
+	
+	//Renderiza o novo frame
+	this->player->render(*window);
 
 	//Exibe o novo frame
 	this->window->display();
+
+
 }
