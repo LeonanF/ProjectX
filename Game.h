@@ -8,8 +8,10 @@ class Game
 private:
 
 	sf::Clock timer;
-	float switchPlayerSpriteInterval = .25f;
+	float switchStaticPlayerSpriteInterval = .25f;
+	float switchMovingPlayerSpriteInterval = .15f;
 	int currentFrame = 0;
+	bool isPlayerWalking = false;
 
 	//Janela
 	sf::RenderWindow* window;
@@ -18,6 +20,10 @@ private:
 	//Funções privadas
 	void initWindow();
 	void initPlayer();
+	void pollEvents();
+	void update();
+	void updateInput();
+	void render();
 
 
 public:
@@ -27,9 +33,6 @@ public:
 
 	//Funções públicas
 	void run();
-	void pollEvents();
-	void update();
-	void render();
 
 };
 
