@@ -2,8 +2,12 @@
 
 void Player::initVariables()
 {
-	this->moveSpeed = 10.f;
+	this->moveSpeed = 3.f;
 	this->playerScale = 1.5f;
+	this->needToCorrectPosition = true;
+	this->onGround = true;
+	this->jumpSpeed = 0.f;
+	this->gravity = 0.5f;
 }
 
 void Player::initSprite()
@@ -15,6 +19,7 @@ void Player::initSprite()
 	sf::Vector2f playerSize = this->getDimensions();
 
 	this->PlayerSprite.setPosition(playerSize.x, windowSize.y - playerSize.y);
+
 }
 
 void Player::initTexture()
@@ -26,6 +31,9 @@ void Player::initTexture()
 		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
 
 	if (!this->MovingPlayerTexture.loadFromFile("Textures/Biker/biker_run.png"))
+		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
+
+	if (!this->JumpingPlayerTexture.loadFromFile("Textures/Biker/biker_jump.png"))
 		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
 
 }
@@ -44,6 +52,13 @@ void Player::isTouchingBorderWindow()
 		this->moveSpeedMultiplier.right = 0.f;
 	else
 		this->moveSpeedMultiplier.right = 1.f;
+
+	if (spriteBounds.top + spriteBounds.height > windowSize.y) {
+		this->jumpSpeed = 0.f;
+		this->onGround = true;
+		this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x , windowSize.y - this->getDimensions().y);
+	}
+
 }
 
 Player::Player(sf::RenderWindow& window)
@@ -64,9 +79,20 @@ const sf::Vector2f Player::getDimensions() const
 	return sf::Vector2f(bounds.width, bounds.height);
 }
 
+
 void Player::update()
 {
 	this->isTouchingBorderWindow();
+
+	if (!this->onGround) {
+		this->jumpSpeed += this->gravity;
+		this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x, this->PlayerSprite.getPosition().y + this->jumpSpeed);
+	}
+}
+
+bool Player::getOnGround() const
+{
+	return this->onGround;
 }
 
 void Player::render(sf::RenderTarget& target)
@@ -86,25 +112,38 @@ void Player::updateMovingTexture(int frameX)
 		this->PlayerSprite.setTextureRect(sf::IntRect(frameX, 0, 48, 48));
 }
 
+void Player::updateJumpingTexture(int frameX)
+{
+	this->PlayerSprite.setTexture(this->JumpingPlayerTexture);
+	this->PlayerSprite.setTextureRect(sf::IntRect(frameX, 0, 48, 48));
+}
+
 void Player::move(sf::String side)
 {
 
 	if (side == "Right") {
 		this->PlayerSprite.move(this->moveSpeedMultiplier.right * moveSpeed, 0);
 		this->PlayerSprite.setScale(this->playerScale, this->playerScale);
-		
-		 if (!needToCorrectPosition) {
+
+		if (!needToCorrectPosition) {
 			this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x - (this->PlayerSprite.getGlobalBounds().width) / 2, this->PlayerSprite.getPosition().y);
 			needToCorrectPosition = true;
 		}
 	}
 	if (side == "Left") {
 		this->PlayerSprite.move(this->moveSpeedMultiplier.left * moveSpeed, 0);
-		this->PlayerSprite.setScale(-this->playerScale, this->playerScale);	
+		this->PlayerSprite.setScale(-this->playerScale, this->playerScale);
 
 		if (needToCorrectPosition) {
 			this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x + (this->PlayerSprite.getGlobalBounds().width) / 2, this->PlayerSprite.getPosition().y);
 			needToCorrectPosition = false;
 		}
 	}
+
+
+}
+void Player::jump()
+{
+	this->jumpSpeed = -12.0f;
+	this->onGround = false;
 }

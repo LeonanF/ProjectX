@@ -53,11 +53,23 @@ void Game::update()
 		this->player->updateStaticTexture(frameX);
 	}
 
+	if (!this->player->getOnGround()) {
+		if (elapsedTime >= this->switchJumpingPlayerSpriteInterval) {
+			this->currentFrame = (currentFrame + 1) % 4;
+			this->timer.restart();
+
+			frameX = this->currentFrame * 48;
+			this->player->updateJumpingTexture(frameX);
+		}
+	}
+
+
 }
 
 void Game::updateInput()
 {
 
+	//Lógica de movimentação no eixo X
 	bool walking = false;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
@@ -70,6 +82,10 @@ void Game::updateInput()
 	}
 
 	this->isPlayerWalking = walking;
+
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) && this->player->getOnGround())
+		this->player->jump();
+
 
 }
 

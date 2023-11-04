@@ -15,13 +15,18 @@ private:
 	sf::Sprite PlayerSprite;
 	sf::Texture StaticPlayerTexture;
 	sf::Texture MovingPlayerTexture;
+	sf::Texture JumpingPlayerTexture;
 
 	sf::RenderWindow& gameWindow;
-
+	
 	MoveSpeeds moveSpeedMultiplier;
+	sf::Clock jumpClock;
 	float moveSpeed;
 	float playerScale;
-	bool needToCorrectPosition = true;
+	float jumpSpeed;
+	float gravity;
+	bool needToCorrectPosition;
+	bool onGround;
 
 	//Funções privadas
 	void initVariables();
@@ -37,13 +42,16 @@ public:
 
 	//Getters e Setters
 	const sf::Vector2f getDimensions() const;
+	bool getOnGround() const;
 
 	//Funções públicas
 	void update();
 	void render(sf::RenderTarget& target);
 	void updateStaticTexture(int frameX);
 	void updateMovingTexture(int frameX);
+	void updateJumpingTexture(int frameX);
 	void move(sf::String side);
+	void jump();
 
 };
 

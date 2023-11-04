@@ -10,6 +10,7 @@ private:
 	sf::Clock timer;
 	float switchStaticPlayerSpriteInterval = .25f;
 	float switchMovingPlayerSpriteInterval = .15f;
+	float switchJumpingPlayerSpriteInterval = .25f;
 	int currentFrame = 0;
 	bool isPlayerWalking = false;
 
