@@ -61,6 +61,13 @@ void Player::isTouchingBorderWindow()
 
 }
 
+void Player::jump() {
+	if (!this->onGround) {
+		this->jumpSpeed += this->gravity;
+		this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x, this->PlayerSprite.getPosition().y + this->jumpSpeed);
+	}
+}
+
 Player::Player(sf::RenderWindow& window)
 	: gameWindow(window)
 {
@@ -83,11 +90,7 @@ const sf::Vector2f Player::getDimensions() const
 void Player::update()
 {
 	this->isTouchingBorderWindow();
-
-	if (!this->onGround) {
-		this->jumpSpeed += this->gravity;
-		this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x, this->PlayerSprite.getPosition().y + this->jumpSpeed);
-	}
+	this->jump();
 }
 
 bool Player::getOnGround() const
@@ -142,7 +145,7 @@ void Player::move(sf::String side)
 
 
 }
-void Player::jump()
+void Player::startJump()
 {
 	this->jumpSpeed = -12.0f;
 	this->onGround = false;

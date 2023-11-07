@@ -33,6 +33,7 @@ private:
 	void initSprite();
 	void initTexture();
 	void isTouchingBorderWindow();
+	void jump();
 
 public:
 
@@ -51,7 +52,7 @@ public:
 	void updateMovingTexture(int frameX);
 	void updateJumpingTexture(int frameX);
 	void move(sf::String side);
-	void jump();
+	void startJump();
 
 };
 

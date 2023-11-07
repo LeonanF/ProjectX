@@ -32,38 +32,7 @@ void Game::update()
 	this->pollEvents();
 	this->updateInput();
 	this->player->update();
-
-	auto elapsedTime = this->timer.getElapsedTime().asSeconds();
-	auto frameX = 0;
-
-	if (this->isPlayerWalking) {
-		if (elapsedTime >= this->switchMovingPlayerSpriteInterval) {
-			this->currentFrame = (currentFrame + 1) % 6;
-			this->timer.restart();
-
-			frameX = this->currentFrame * 48;
-			this->player->updateMovingTexture(frameX);
-		}
-	} else if (elapsedTime >= this->switchStaticPlayerSpriteInterval) {
-		this->currentFrame = (currentFrame + 1) % 4;
-		this->timer.restart();
-
-		frameX = this->currentFrame * 48;
-
-		this->player->updateStaticTexture(frameX);
-	}
-
-	if (!this->player->getOnGround()) {
-		if (elapsedTime >= this->switchJumpingPlayerSpriteInterval) {
-			this->currentFrame = (currentFrame + 1) % 4;
-			this->timer.restart();
-
-			frameX = this->currentFrame * 48;
-			this->player->updateJumpingTexture(frameX);
-		}
-	}
-
-
+	this->updatePlayerSprite();
 }
 
 void Game::updateInput()
@@ -84,9 +53,43 @@ void Game::updateInput()
 	this->isPlayerWalking = walking;
 
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) && this->player->getOnGround())
-		this->player->jump();
+		this->player->startJump();
 
 
+}
+
+void Game::updatePlayerSprite()
+{
+	auto elapsedTime = this->timer.getElapsedTime().asSeconds();
+	auto frameX = 0;
+
+	if (this->isPlayerWalking && this->player->getOnGround()) {
+		if (elapsedTime >= this->switchMovingPlayerSpriteInterval) {
+			this->currentMovingFrame = (currentMovingFrame + 1) % 6;
+			this->timer.restart();
+
+			frameX = this->currentMovingFrame * 48;
+			this->player->updateMovingTexture(frameX);
+		}
+	}
+	else if (elapsedTime >= this->switchStaticPlayerSpriteInterval) {
+		this->currentStaticFrame = (currentStaticFrame + 1) % 4;
+		this->timer.restart();
+
+		frameX = this->currentStaticFrame * 48;
+
+		this->player->updateStaticTexture(frameX);
+	}
+
+	if (!this->player->getOnGround()) {
+		if (elapsedTime >= this->switchJumpingPlayerSpriteInterval) {
+			this->currentJumpingFrame = (currentJumpingFrame + 1) % 4;
+			this->timer.restart();
+
+			frameX = this->currentJumpingFrame * 48;
+			this->player->updateJumpingTexture(frameX);
+		}
+	}
 }
 
 void Game::render()
