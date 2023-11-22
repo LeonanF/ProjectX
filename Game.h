@@ -1,13 +1,20 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Player.h"
 
 class Game
 {
 private:
 
+	std::vector<sf::Sprite*> platformSprite;
+	std::vector<sf::Sprite*> ground;
+	sf::Texture platformTexture;
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 	sf::Clock timer;
+	sf::Music theme;
 	float switchStaticPlayerSpriteInterval = .25f;
 	float switchMovingPlayerSpriteInterval = .15f;
 	float switchJumpingPlayerSpriteInterval = .2f;
@@ -25,6 +32,9 @@ private:
 	//Funções privadas
 	void initWindow();
 	void initPlayer();
+	void initTexture();
+	void initSprite();
+	void initMusic();
 	void pollEvents();
 	void update();
 	void updateInput();

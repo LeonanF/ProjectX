@@ -3,7 +3,7 @@
 void Player::initVariables()
 {
 	this->moveSpeed = 3.f;
-	this->playerScale = 1.5f;
+	this->playerScale = 2.5f;
 	this->needToCorrectPosition = true;
 	this->onGround = true;
 	this->jumpSpeed = 0.f;
@@ -19,7 +19,7 @@ void Player::initSprite()
 	sf::Vector2u windowSize = gameWindow.getSize();
 	sf::Vector2f playerSize = this->getDimensions();
 
-	this->PlayerSprite.setPosition(playerSize.x, windowSize.y - playerSize.y);
+	this->PlayerSprite.setPosition(playerSize.x, windowSize.y - playerSize.y - groundHeight);
 
 }
 
@@ -57,10 +57,10 @@ void Player::isTouchingBorderWindow()
 	else
 		this->moveSpeedMultiplier.right = 1.f;
 
-	if (spriteBounds.top + spriteBounds.height > windowSize.y) {
+	if (spriteBounds.top + spriteBounds.height > (windowSize.y - this->groundHeight)) {
 		this->jumpSpeed = 0.f;
 		this->onGround = true;
-		this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x , windowSize.y - this->getDimensions().y);
+		this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x , windowSize.y - this->getDimensions().y - groundHeight);
 	}
 
 }
@@ -72,8 +72,8 @@ void Player::jump() {
 	}
 }
 
-Player::Player(sf::RenderWindow& window)
-	: gameWindow(window)
+Player::Player(sf::RenderWindow& window, int groundh)
+	: gameWindow(window), groundHeight(groundh)
 {
 	this->initVariables();
 	this->initTexture();

@@ -28,6 +28,7 @@ private:
 	float gravity;
 	bool needToCorrectPosition;
 	bool onGround;
+	int groundHeight;
 	bool isCrouching; // Crouch
 
 	//Funções privadas
@@ -40,7 +41,7 @@ private:
 public:
 
 	//Construtor e destrutor
-	Player(sf::RenderWindow& window);
+	Player(sf::RenderWindow& window, int groundh);
 	virtual ~Player();
 
 	//Getters e Setters
