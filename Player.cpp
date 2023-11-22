@@ -3,7 +3,7 @@
 void Player::initVariables()
 {
 	this->moveSpeed = 3.f;
-	this->playerScale = 1.5f;
+	this->playerScale = 2.5f;
 	this->needToCorrectPosition = true;
 	this->onGround = true;
 	this->jumpSpeed = 0.f;
