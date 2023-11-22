@@ -7,8 +7,8 @@ class Game
 {
 private:
 
+	std::vector<sf::Sprite*> platformSprite;
 	sf::Texture platformTexture;
-	sf::Sprite platformSprite;
 	sf::Clock timer;
 	float switchStaticPlayerSpriteInterval = .25f;
 	float switchMovingPlayerSpriteInterval = .15f;

@@ -16,7 +16,7 @@ void Game::initPlayer()
 
 void Game::initTexture()
 {
-	if (!this->platformTexture.loadFromFile("Texture/Tiles/char_platform.png"))
+	if (!this->platformTexture.loadFromFile("Textures/Tiles/char_platform.png"))
 	{
 		std::cout << "ERROR::GAMER::INITTEXTURE::Erro ao carregar textura!";
 	}
@@ -24,7 +24,21 @@ void Game::initTexture()
 
 void Game::initSprite()
 {
+	int windowSizeY = this->window->getSize().y;
+
+	this->platformSprite.resize(3);
 	
+
+	for (int i = 0; i < 3; i++) {
+
+		this->platformSprite[i] = new sf::Sprite();
+		platformSprite[i]->setTexture(this->platformTexture);
+		platformSprite[i]->setScale(2.0f, 2.0f);
+	}
+
+	platformSprite[0]->setPosition(200, 850);
+	platformSprite[1]->setPosition(200, 780);
+	platformSprite[2]->setPosition(560, 710);
 }
 
 
@@ -109,6 +123,10 @@ void Game::render()
 {
 	//Limpa o frame antigo
 	this->window->clear();
+
+	for (auto platform : this->platformSprite) {
+		this->window->draw(*platform);
+	}
 	
 	//Renderiza o novo frame
 	this->player->render(*window);
@@ -124,6 +142,8 @@ Game::Game()
 {
 	this->initWindow();
 	this->initPlayer();
+	this->initTexture();
+	this->initSprite();
 }
 
 //Destrutor
