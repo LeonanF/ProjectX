@@ -14,6 +14,19 @@ void Game::initPlayer()
 	this->player = new Player(*this->window);
 }
 
+void Game::initTexture()
+{
+	if (!this->platformTexture.loadFromFile("Texture/Tiles/char_platform.png"))
+	{
+		std::cout << "ERROR::GAMER::INITTEXTURE::Erro ao carregar textura!";
+	}
+}
+
+void Game::initSprite()
+{
+	
+}
+
 
 void Game::pollEvents()
 {//
@@ -52,7 +65,7 @@ void Game::updateInput()
 
 	this->isPlayerWalking = walking;
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) && this->player->getOnGround())
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) && this->player->getOnGround())
 		this->player->startJump();
 
 
