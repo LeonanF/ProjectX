@@ -12,6 +12,7 @@ void Game::initWindow()
 void Game::initPlayer()
 {
 	this->player = new Player(*this->window);
+	std::cout << "Ué, mas isso não é coisa de mulher?";
 }
 
 void Game::initTexture()
