@@ -55,7 +55,14 @@ void Game::updateInput()
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) && this->player->getOnGround())
 		this->player->startJump();
 
-
+	// Crouch
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) && this->player->getOnGround()) {
+		this->player->crouch();
+	}
+	else {
+		this->player->standUp();
+	}
+		
 }
 
 void Game::updatePlayerSprite()
@@ -88,6 +95,19 @@ void Game::updatePlayerSprite()
 
 			frameX = this->currentJumpingFrame * 48;
 			this->player->updateJumpingTexture(frameX);
+		}
+	}
+
+	// Crouch
+	if (this->player->getOnGround() && this->player->getIsCrouch()) {
+		if (elapsedTime >= this->switchCrouchingPlayerSpriteInterval) {
+			frameX = this->currentCrouchingFrame * 48;
+			this->player->updateCrouchingTexture(frameX);
+
+			if (currentCrouchingFrame != 2) {
+				this->currentCrouchingFrame = (currentCrouchingFrame + 1) % 3;
+			}
+			this->timer.restart();
 		}
 	}
 }

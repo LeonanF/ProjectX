@@ -8,6 +8,7 @@ void Player::initVariables()
 	this->onGround = true;
 	this->jumpSpeed = 0.f;
 	this->gravity = 0.5f;
+	this->isCrouching = false; // Crouch
 }
 
 void Player::initSprite()
@@ -30,12 +31,15 @@ void Player::initTexture()
 	else
 		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
 
-	if (!this->MovingPlayerTexture.loadFromFile("Textures/Biker/biker_run.png"))
+	if (!this->MovingPlayerTexture.loadFromFile("Textures/Biker/biker_walk.png"))
 		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
 
 	if (!this->JumpingPlayerTexture.loadFromFile("Textures/Biker/biker_jump.png"))
 		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
 
+	// Crouch
+	if (!this->CrouchingPlayerTexture.loadFromFile("Textures/Biker/biker_crouch1.png"))
+		std::cout << "ERROR::PLAYER::INITTEXTURE::Erro ao carregar textura!";
 }
 
 void Player::isTouchingBorderWindow()
@@ -98,6 +102,11 @@ bool Player::getOnGround() const
 	return this->onGround;
 }
 
+bool Player::getIsCrouch() const
+{
+	return this->isCrouching;
+}
+
 void Player::render(sf::RenderTarget& target)
 {
 	target.draw(this->PlayerSprite);
@@ -118,6 +127,13 @@ void Player::updateMovingTexture(int frameX)
 void Player::updateJumpingTexture(int frameX)
 {
 	this->PlayerSprite.setTexture(this->JumpingPlayerTexture);
+	this->PlayerSprite.setTextureRect(sf::IntRect(frameX, 0, 48, 48));
+}
+
+// Crouch
+void Player::updateCrouchingTexture(int frameX)
+{
+	this->PlayerSprite.setTexture(this->CrouchingPlayerTexture);
 	this->PlayerSprite.setTextureRect(sf::IntRect(frameX, 0, 48, 48));
 }
 
@@ -145,8 +161,20 @@ void Player::move(sf::String side)
 
 
 }
+
 void Player::startJump()
 {
 	this->jumpSpeed = -12.0f;
 	this->onGround = false;
+}
+
+// Crouch
+void Player::crouch()
+{
+	isCrouching = true;
+}
+
+void Player::standUp()
+{
+	isCrouching = false;
 }

@@ -16,6 +16,7 @@ private:
 	sf::Texture StaticPlayerTexture;
 	sf::Texture MovingPlayerTexture;
 	sf::Texture JumpingPlayerTexture;
+	sf::Texture CrouchingPlayerTexture; // Crouch
 
 	sf::RenderWindow& gameWindow;
 	
@@ -27,6 +28,7 @@ private:
 	float gravity;
 	bool needToCorrectPosition;
 	bool onGround;
+	bool isCrouching; // Crouch
 
 	//Funções privadas
 	void initVariables();
@@ -44,6 +46,7 @@ public:
 	//Getters e Setters
 	const sf::Vector2f getDimensions() const;
 	bool getOnGround() const;
+	bool getIsCrouch() const; // Crouch
 
 	//Funções públicas
 	void update();
@@ -51,8 +54,10 @@ public:
 	void updateStaticTexture(int frameX);
 	void updateMovingTexture(int frameX);
 	void updateJumpingTexture(int frameX);
+	void updateCrouchingTexture(int frameX);
 	void move(sf::String side);
 	void startJump();
-
+	void crouch(); // Crouch
+	void standUp(); //Crouch
 };
 
