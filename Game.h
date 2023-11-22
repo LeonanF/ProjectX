@@ -7,6 +7,8 @@ class Game
 {
 private:
 
+	sf::Texture platformTexture;
+	sf::Sprite platformSprite;
 	sf::Clock timer;
 	float switchStaticPlayerSpriteInterval = .25f;
 	float switchMovingPlayerSpriteInterval = .15f;
@@ -23,6 +25,8 @@ private:
 	//Funções privadas
 	void initWindow();
 	void initPlayer();
+	void initTexture();
+	void initSprite();
 	void pollEvents();
 	void update();
 	void updateInput();

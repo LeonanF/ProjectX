@@ -14,6 +14,19 @@ void Game::initPlayer()
 	this->player = new Player(*this->window);
 }
 
+void Game::initTexture()
+{
+	if (!this->platformTexture.loadFromFile("Texture/Tiles/char_platform.png"))
+	{
+		std::cout << "ERROR::GAMER::INITTEXTURE::Erro ao carregar textura!";
+	}
+}
+
+void Game::initSprite()
+{
+	
+}
+
 
 void Game::pollEvents()
 {
