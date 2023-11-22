@@ -16,7 +16,7 @@ void Game::initPlayer()
 
 
 void Game::pollEvents()
-{
+{//
 	sf::Event ev;
 	while (this->window->isOpen() && this->window->pollEvent(ev)) {
 		if (ev.type == sf::Event::Closed)
