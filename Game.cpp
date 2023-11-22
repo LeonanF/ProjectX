@@ -11,15 +11,19 @@ void Game::initWindow()
 
 void Game::initPlayer()
 {
-	this->player = new Player(*this->window);
-	std::cout << "Ué, mas isso não é coisa de mulher?";
+	this->player = new Player(*this->window, this->ground[0]->getGlobalBounds().height);
 }
 
 void Game::initTexture()
 {
 	if (!this->platformTexture.loadFromFile("Textures/Tiles/char_platform.png"))
 	{
-		std::cout << "ERROR::GAMER::INITTEXTURE::Erro ao carregar textura!";
+		std::cout << "ERROR::GAME::INITTEXTURE::Erro ao carregar textura!";
+	}
+
+	if (!this->backgroundTexture.loadFromFile("Textures/Background/Background.png"))
+	{
+		std::cout << "ERROR::GAME::INITTEXTURE::Erro ao carregar textura!";
 	}
 }
 
@@ -40,8 +44,41 @@ void Game::initSprite()
 	platformSprite[0]->setPosition(200, 850);
 	platformSprite[1]->setPosition(200, 780);
 	platformSprite[2]->setPosition(560, 710);
+
+	this->backgroundSprite.setTexture(backgroundTexture);
+
+	// Calcular a proporção das texturas
+	float scaleX = static_cast<float>(this->window->getSize().x) / this->backgroundSprite.getLocalBounds().width;
+	float scaleY = static_cast<float>(this->window->getSize().y) / this->backgroundSprite.getLocalBounds().height;
+
+
+	float scale = std::min(scaleX, scaleY);
+	this->backgroundSprite.setScale(scale, scale);
+	
+	float scaleGrounds = 3.0f;
+
+	int grounds = ceil(this->window->getSize().x / (this->platformTexture.getSize().x * scaleGrounds));
+	this->ground.resize(grounds);
+
+	for (int i = 0; i < grounds; i++) {
+
+		this->ground[i] = new sf::Sprite();
+		ground[i]->setTexture(this->platformTexture);
+		ground[i]->setScale(scaleGrounds, scaleGrounds);
+		ground[i]->setPosition(i * this->ground[i]->getGlobalBounds().width, this->window->getSize().y - this->ground[i]->getGlobalBounds().height);
+	}
 }
 
+void Game::initMusic()
+{
+	if (!this->theme.openFromFile("Sounds/theme.ogg"))
+	{
+		std::cout << "ERROR::GAME::INITMUSIC::Erro ao carregar tema!";
+	}
+	this->theme.setVolume(5.f);
+	this->theme.setLoop(true);
+	this->theme.play();
+}
 
 void Game::pollEvents()
 {//
@@ -124,6 +161,11 @@ void Game::render()
 {
 	//Limpa o frame antigo
 	this->window->clear();
+	this->window->draw(this->backgroundSprite);
+
+	for (auto ground : this->ground) {
+		this->window->draw(*ground);
+	}
 
 	for (auto platform : this->platformSprite) {
 		this->window->draw(*platform);
@@ -141,10 +183,11 @@ void Game::render()
 //Construtor
 Game::Game()
 {
-	this->initWindow();
-	this->initPlayer();
+	this->initWindow();	
 	this->initTexture();
+	this->initMusic();
 	this->initSprite();
+	this->initPlayer();
 }
 
 //Destrutor
