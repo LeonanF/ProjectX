@@ -24,6 +24,8 @@ private:
 	int currentJumpingFrame = 0;
 	int currentCrouchingFrame = 0; // Crouch
 	bool isPlayerWalking = false;
+	bool onPlatform = false;
+
 
 	//Janela
 	sf::RenderWindow* window;
@@ -40,6 +42,7 @@ private:
 	void updateInput();
 	void updatePlayerSprite();
 	void render();
+	void collision();
 
 
 public:

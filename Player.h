@@ -60,5 +60,8 @@ public:
 	void startJump();
 	void crouch(); // Crouch
 	void standUp(); //Crouch
+	sf::FloatRect getPlayerBounds();
+	void setPosition(int posY);
+	void setJumpSpeed(float speed);
 };
 

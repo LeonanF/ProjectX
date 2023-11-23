@@ -164,7 +164,7 @@ void Player::move(sf::String side)
 
 void Player::startJump()
 {
-	this->jumpSpeed = -12.0f;
+	this->jumpSpeed = -15.0f;
 	this->onGround = false;
 }
 
@@ -177,4 +177,19 @@ void Player::crouch()
 void Player::standUp()
 {
 	isCrouching = false;
+}
+
+sf::FloatRect Player::getPlayerBounds()
+{
+	return this->PlayerSprite.getGlobalBounds();
+}
+
+void Player::setPosition(int posY)
+{
+	this->PlayerSprite.setPosition(this->PlayerSprite.getPosition().x, posY);
+}
+
+void Player::setJumpSpeed(float speed)
+{
+	this->jumpSpeed = speed;
 }

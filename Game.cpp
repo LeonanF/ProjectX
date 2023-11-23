@@ -38,12 +38,15 @@ void Game::initSprite()
 
 		this->platformSprite[i] = new sf::Sprite();
 		platformSprite[i]->setTexture(this->platformTexture);
-		platformSprite[i]->setScale(2.0f, 2.0f);
+		platformSprite[i]->setScale(3.0f, 3.0f);
 	}
 
-	platformSprite[0]->setPosition(200, 850);
-	platformSprite[1]->setPosition(200, 780);
-	platformSprite[2]->setPosition(560, 710);
+	auto initPos = 200;
+	auto platformWidth = this->platformSprite[0]->getGlobalBounds().width;
+
+	platformSprite[0]->setPosition(initPos, 850);
+	platformSprite[1]->setPosition(initPos+platformWidth, 850);
+	platformSprite[2]->setPosition(initPos+platformWidth*2, 850);
 
 	this->backgroundSprite.setTexture(backgroundTexture);
 
@@ -98,6 +101,7 @@ void Game::update()
 	this->updateInput();
 	this->player->update();
 	this->updatePlayerSprite();
+	this->collision();
 }
 
 void Game::updateInput()
@@ -117,7 +121,7 @@ void Game::updateInput()
 
 	this->isPlayerWalking = walking;
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) && this->player->getOnGround())
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) && (this->player->getOnGround() || this->onPlatform))
 		this->player->startJump();
 
 	// Crouch
@@ -197,6 +201,31 @@ void Game::render()
 	//Exibe o novo frame
 	this->window->display();
 
+
+}
+
+void Game::collision()
+{
+	sf::FloatRect playerRealBounds(this->player->getPlayerBounds());
+
+
+	for (auto platform:this->platformSprite){
+		sf::FloatRect platformBounds(platform->getGlobalBounds());
+
+		if ((playerRealBounds.left + playerRealBounds.width / 2.f > platformBounds.left &&
+			playerRealBounds.left + playerRealBounds.width / 2.f < platformBounds.left + platformBounds.width) &&
+			(playerRealBounds.top + playerRealBounds.height > platformBounds.top &&
+				playerRealBounds.top + playerRealBounds.height < platformBounds.top + platformBounds.height)) {
+			this->player->setPosition(platformBounds.top - playerRealBounds.height);
+			this->player->setJumpSpeed(0.f);
+			this->onPlatform = true;
+		}
+		else {
+			this->onPlatform = false;
+		}
+	}
+
+	std::cout << std::to_string(this->onPlatform) << std::endl;
 
 }
 
