@@ -43,22 +43,17 @@ void Game::initSprite()
 {
 	int windowSizeY = this->window->getSize().y;
 
-	this->platformSprite.resize(3);
+	this->platformSprite.resize(4);
 	
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 
 		this->platformSprite[i] = new sf::Sprite();
 		platformSprite[i]->setTexture(this->platformTexture);
 		platformSprite[i]->setScale(3.0f, 3.0f);
 	}
 
-	auto initPos = 200;
-	auto platformWidth = this->platformSprite[0]->getGlobalBounds().width;
-
-	platformSprite[0]->setPosition(initPos, 850);
-	platformSprite[1]->setPosition(initPos+platformWidth, 850);
-	platformSprite[2]->setPosition(initPos+platformWidth*2, 850);
+	
 
 	this->backgroundSprite.setTexture(backgroundTexture);
 
@@ -93,6 +88,19 @@ void Game::initSprite()
 		ground[i]->setScale(scaleGrounds, scaleGrounds);
 		ground[i]->setPosition(i * this->ground[i]->getGlobalBounds().width, this->window->getSize().y - this->ground[i]->getGlobalBounds().height);
 	}
+
+	auto initPosX = 400;
+	auto platformWidth = this->platformSprite[0]->getGlobalBounds().width;
+	auto platformHeight = this->platformSprite[0]->getGlobalBounds().height;
+
+
+	auto initPosY = this->window->getSize().y - this->ground[0]->getGlobalBounds().height - platformHeight * 4;
+
+	platformSprite[0]->setPosition(initPosX, initPosY);
+	platformSprite[1]->setPosition(initPosX + platformWidth, initPosY);
+	platformSprite[2]->setPosition(initPosX + platformWidth * 2, initPosY);
+
+	platformSprite[3]->setPosition(initPosX + platformWidth * 8, initPosY);
 }
 
 void Game::initMusic()
