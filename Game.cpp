@@ -208,24 +208,21 @@ void Game::collision()
 {
 	sf::FloatRect playerRealBounds(this->player->getPlayerBounds());
 
+	this->onPlatform = false;
 
 	for (auto platform:this->platformSprite){
 		sf::FloatRect platformBounds(platform->getGlobalBounds());
 
-		if ((playerRealBounds.left + playerRealBounds.width / 2.f > platformBounds.left &&
-			playerRealBounds.left + playerRealBounds.width / 2.f < platformBounds.left + platformBounds.width) &&
+		if ((playerRealBounds.left + playerRealBounds.width / 1.3f > platformBounds.left &&
+			playerRealBounds.left + playerRealBounds.width / 3.8f < platformBounds.left + platformBounds.width) &&
 			(playerRealBounds.top + playerRealBounds.height > platformBounds.top &&
 				playerRealBounds.top + playerRealBounds.height < platformBounds.top + platformBounds.height)) {
+			this->onPlatform = true;
 			this->player->setPosition(platformBounds.top - playerRealBounds.height);
 			this->player->setJumpSpeed(0.f);
-			this->onPlatform = true;
-		}
-		else {
-			this->onPlatform = false;
+			break;
 		}
 	}
-
-	std::cout << std::to_string(this->onPlatform) << std::endl;
 
 }
 
