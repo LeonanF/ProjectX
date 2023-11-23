@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "random"
 
 
 //Funções privadas
@@ -16,7 +17,7 @@ void Game::initPlayer()
 
 void Game::initTexture()
 {
-	if (!this->platformTexture.loadFromFile("Textures/Tiles/char_platform.png"))
+	if (!this->platformTexture.loadFromFile("Textures/Tiles/platform.png"))
 	{
 		std::cout << "ERROR::GAME::INITTEXTURE::Erro ao carregar textura!";
 	}
@@ -24,6 +25,17 @@ void Game::initTexture()
 	if (!this->backgroundTexture.loadFromFile("Textures/Background/Background.png"))
 	{
 		std::cout << "ERROR::GAME::INITTEXTURE::Erro ao carregar textura!";
+	}
+
+	this->groundTexture.resize(2);
+
+	for (int i = 0; i < 2; i++) {
+		std::string filePath = "Textures/Tiles/ground" + std::to_string(i + 1) + ".png";
+
+		if (!this->groundTexture[i].loadFromFile(filePath))
+		{
+			std::cout << "ERROR::GAME::INITTEXTURE::Erro ao carregar textura!";
+		}
 	}
 }
 
@@ -63,10 +75,21 @@ void Game::initSprite()
 	int grounds = ceil(this->window->getSize().x / (this->platformTexture.getSize().x * scaleGrounds));
 	this->ground.resize(grounds);
 
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(0, 4);
+
 	for (int i = 0; i < grounds; i++) {
 
 		this->ground[i] = new sf::Sprite();
-		ground[i]->setTexture(this->platformTexture);
+
+		if (dist(gen) == 0) {
+			ground[i]->setTexture(this->groundTexture[1]);
+		}
+		else {
+			ground[i]->setTexture(this->groundTexture[0]);
+		}
+
 		ground[i]->setScale(scaleGrounds, scaleGrounds);
 		ground[i]->setPosition(i * this->ground[i]->getGlobalBounds().width, this->window->getSize().y - this->ground[i]->getGlobalBounds().height);
 	}
@@ -139,7 +162,7 @@ void Game::updatePlayerSprite()
 	auto elapsedTime = this->timer.getElapsedTime().asSeconds();
 	auto frameX = 0;
 
-	if (this->isPlayerWalking && this->player->getOnGround()) {
+	if (this->isPlayerWalking && (this->player->getOnGround()  || this->onPlatform)) {
 		if (elapsedTime >= this->switchMovingPlayerSpriteInterval) {
 			this->currentMovingFrame = (currentMovingFrame + 1) % 6;
 			this->timer.restart();
@@ -157,7 +180,7 @@ void Game::updatePlayerSprite()
 		this->player->updateStaticTexture(frameX);
 	}
 
-	if (!this->player->getOnGround()) {
+	if (!this->player->getOnGround() && !this->onPlatform) {
 		if (elapsedTime >= this->switchJumpingPlayerSpriteInterval) {
 			this->currentJumpingFrame = (currentJumpingFrame + 1) % 4;
 			this->timer.restart();

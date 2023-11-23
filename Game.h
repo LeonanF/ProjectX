@@ -10,6 +10,7 @@ private:
 
 	std::vector<sf::Sprite*> platformSprite;
 	std::vector<sf::Sprite*> ground;
+	std::vector<sf::Texture>  groundTexture;
 	sf::Texture platformTexture;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
