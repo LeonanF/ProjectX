@@ -43,10 +43,10 @@ void Game::initSprite()
 {
 	int windowSizeY = this->window->getSize().y;
 
-	this->platformSprite.resize(4);
+	this->platformSprite.resize(7);
 	
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 7; i++) {
 
 		this->platformSprite[i] = new sf::Sprite();
 		platformSprite[i]->setTexture(this->platformTexture);
@@ -100,7 +100,12 @@ void Game::initSprite()
 	platformSprite[1]->setPosition(initPosX + platformWidth, initPosY);
 	platformSprite[2]->setPosition(initPosX + platformWidth * 2, initPosY);
 
-	platformSprite[3]->setPosition(initPosX + platformWidth * 8, initPosY);
+	platformSprite[3]->setPosition(initPosX + platformWidth * 4, initPosY - platformHeight * 4);
+	platformSprite[4]->setPosition(initPosX + platformWidth * 5, initPosY - platformHeight * 4);
+
+	platformSprite[5]->setPosition(initPosX + platformWidth * 8, initPosY);
+	platformSprite[6]->setPosition(initPosX + platformWidth * 9, initPosY);
+
 }
 
 void Game::initMusic()
